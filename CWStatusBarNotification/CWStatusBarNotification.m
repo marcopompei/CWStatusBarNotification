@@ -11,7 +11,7 @@
 
 #define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 
-#define FONT_SIZE 12.0f
+#define FONT_SIZE 10.0f
 #define PADDING 10.0f
 #define SCROLL_SPEED 40.0f
 #define SCROLL_DELAY 1.0f
@@ -69,7 +69,7 @@
                          }];
     } else {
         textImage.image = nil;
-        [super drawTextInRect:CGRectInset(rect, PADDING, 0)];
+        [super drawTextInRect:UIEdgeInsetsInsetRect(rect, self.layoutMargins)];
     }
 }
 
@@ -330,6 +330,12 @@ static void cancel_delayed_block(CWDelayedBlockHandle delayedHandle)
     view.clipsToBounds = YES;
     view.userInteractionEnabled = YES;
     [view addGestureRecognizer:self.tapGestureRecognizer];
+    if (@available(iOS 11.0, *)) {
+        if ([self getStatusBarHeight] > 40) {
+            view.insetsLayoutMarginsFromSafeArea = false;
+            view.layoutMargins = UIEdgeInsetsMake(32, PADDING, 0, PADDING);
+        }
+    }
     switch (self.notificationAnimationInStyle) {
         case CWNotificationAnimationStyleTop:
             view.frame = [self getNotificationLabelTopFrame];
