@@ -331,9 +331,11 @@ static void cancel_delayed_block(CWDelayedBlockHandle delayedHandle)
     view.userInteractionEnabled = YES;
     [view addGestureRecognizer:self.tapGestureRecognizer];
     if (@available(iOS 11.0, *)) {
+        view.insetsLayoutMarginsFromSafeArea = false;
         if ([self getStatusBarHeight] > 40) {
-            view.insetsLayoutMarginsFromSafeArea = false;
             view.layoutMargins = UIEdgeInsetsMake(32, PADDING, 0, PADDING);
+        } else {
+            view.layoutMargins = UIEdgeInsetsMake(0, PADDING, 0, PADDING);
         }
     }
     switch (self.notificationAnimationInStyle) {
